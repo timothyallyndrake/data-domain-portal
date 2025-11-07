@@ -25,6 +25,12 @@ jobs:
         with:
           version: 9.12.0
 
+      - name: Verify pnpm
+        run: |
+          echo "PATH=$PATH"
+          which pnpm || true
+          pnpm --version || true
+
       - name: Install JS deps
         run: pnpm install --frozen-lockfile=false
 
