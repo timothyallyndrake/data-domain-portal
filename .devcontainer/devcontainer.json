@@ -1,0 +1,37 @@
+{
+  "name": "Data Domain Portal Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      "settings": {
+        // Point the Python extension to the virtual environment Poetry will create
+        "python.defaultInterpreterPath": "${containerWorkspace}/apps/api/.venv/bin/python"
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-vscode-remote.remote-containers",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "pnpm install",
+  // Forward ports from the container to the host machine.
+  "forwardPorts": [
+    3000,
+    8000
+  ],
+  "remoteUser": "vscode"
+}
