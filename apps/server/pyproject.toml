@@ -11,7 +11,7 @@ dependencies = [
   "sqlalchemy",
   "alembic",
   "snowflake-sqlalchemy",
-  "snowflake-connector-python[async]",
+  "snowflake-connector-python",
   "pydantic-settings",
   "redis[hiredis]",
   "python-jose[cryptography]",
@@ -31,6 +31,16 @@ dev = [
   "pytest-html",
   "pytest-mock",
   "httpx",
+
+  # TODO: Revisit this list after `uv` or its Nx integration is updated.
+  # The `uv run` command is currently failing to resolve the full dependency
+  # tree for pytest, requiring these sub-dependencies to be listed explicitly.
+  "pluggy",
+  "pygments",
+  "iniconfig",
+  "pytest-metadata",
+  "jinja2",
+  "termcolor",
 ]
 
 [build-system]
@@ -39,3 +49,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
