@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/server/src",
+  "root": "apps/server",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
+        "cwd": "apps/server"
+      }
+    },
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv pip sync pyproject.toml --all-extras",
+        "cwd": "apps/server"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run ruff check src tests",
+        "cwd": "apps/server"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run pytest",
+        "cwd": "apps/server"
+      }
+    }
+  },
+  "tags": []
+}
