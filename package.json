@@ -1,5 +1,5 @@
 {
-  "name": "data-domain-portal",
+  "name": "data-domain-portal-v4",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {},
@@ -9,5 +9,10 @@
     "@nx/js": "22.0.3",
     "@nx/workspace": "22.0.3",
     "nx": "22.0.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-glob": "3.3.2"
+    }
   }
 }
