@@ -1,0 +1,9 @@
+{
+  "include": ["apps/server"],
+  "executionEnvironments": [
+    {
+      "root": "apps/server",
+      "extraPaths": ["apps/server/src"]
+    }
+  ]
+}

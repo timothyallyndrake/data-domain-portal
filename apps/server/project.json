@@ -12,10 +12,17 @@
         "cwd": "apps/server"
       }
     },
+    "compile-deps": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv pip compile pyproject.toml --all-extras -o requirements.txt",
+        "cwd": "apps/server"
+      }
+    },
     "install": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "uv pip sync pyproject.toml --all-extras",
+        "command": "uv pip sync requirements.txt",
         "cwd": "apps/server"
       }
     },

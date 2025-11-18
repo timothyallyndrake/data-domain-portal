@@ -6,41 +6,41 @@ readme = "README.md"
 requires-python = ">=3.11,<4"
 
 dependencies = [
-  "fastapi",
-  "uvicorn[standard]",
-  "sqlalchemy",
-  "alembic",
-  "snowflake-sqlalchemy",
-  "snowflake-connector-python",
-  "pydantic-settings",
-  "redis[hiredis]",
-  "python-jose[cryptography]",
-  "passlib[bcrypt]",
-  "python-multipart",
-  "email-validator",
-  "click",
+  "sqlalchemy>=2.0.29",
+  "alembic>=1.13.1",
+  "snowflake-sqlalchemy>=1.5.3",
+  "snowflake-connector-python>=3.6.0",
+  "fastapi==0.121.2",
+  "uvicorn[standard]==0.38.0",
+  "pydantic-settings==2.12.0",
+  "redis[hiredis]==7.0.1",
+  "python-jose[cryptography]==3.5.0",
+  "passlib[bcrypt]==1.7.4",
+  "python-multipart==0.0.20",
+  "email-validator==2.3.0",
+  "click==8.3.1",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "autopep8",
-  "ruff",
-  "pytest",
-  "pytest-sugar",
-  "pytest-cov",
-  "pytest-html",
-  "pytest-mock",
-  "httpx",
+  "autopep8==2.3.2",
+  "ruff==0.14.5",
+  "pytest==9.0.1",
+  "pytest-sugar==1.1.1",
+  "pytest-cov==7.0.0",
+  "pytest-html==4.1.1",
+  "pytest-mock==3.15.1",
+  "httpx==0.28.1",
 
   # TODO: Revisit this list after `uv` or its Nx integration is updated.
   # The `uv run` command is currently failing to resolve the full dependency
   # tree for pytest, requiring these sub-dependencies to be listed explicitly.
-  "pluggy",
-  "pygments",
-  "iniconfig",
-  "pytest-metadata",
-  "jinja2",
-  "termcolor",
+  "pluggy==1.6.0",
+  "pygments==2.19.2",
+  "iniconfig==2.3.0",
+  "pytest-metadata==3.1.1",
+  "jinja2==3.1.6",
+  "termcolor==3.2.0",
 ]
 
 [build-system]
