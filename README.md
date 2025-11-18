@@ -1,96 +1,116 @@
-# DataDomainPortal
+# Data Domain Portal
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+Full-stack data platform demo using React + TypeScript, FastAPI + Python, Kafka, Redis, Snowflake, dbt, and Dagster. This project showcases self-service data ingestion, validation, orchestration, and analytics with modern testing and observability, all managed within a high-performance Nx monorepo.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Project Goal
 
-## Run tasks
+Build a **Data Domain Portal**: a self-service data platform for mapping CSV data to canonical models, validating that data, triggering ingestion pipelines, orchestrating ELT processes into **Snowflake** (via **Dagster** + **dbt**), and visualizing the resulting analytics. The primary demonstration domain is **Orders**, but the architecture is designed to be generic so new domains can be added with minimal changes.
 
-To run tasks with Nx use:
+## Technology Stack
 
-```sh
-npx nx <target> <project-name>
-```
+- **Monorepo:** [Nx](https://nx.dev)
+- **Frontend:** React, TypeScript, MUI, Zustand
+- **Backend:** FastAPI (Python), SQLAlchemy, Pydantic, Redis
+- **Data Platform:** Snowflake, dbt
+- **Testing:** Pytest, Jest/RTL, Playwright
+- **DevOps & CI/CD:** Docker, GitHub Actions
 
-For example:
+## Getting Started
 
-```sh
-npx nx build myproject
-```
+### Prerequisites
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+- **Node.js (v24+ LTS):** Recommended to use a version manager like `nvm`.
+- **pnpm (v10+):** [pnpm installation guide](https://pnpm.io/installation).
+- **Python (v3.11+):** Recommended to use a version manager like `pyenv`.
+- **Docker Desktop:** For running local services like Redis.
+- **`uv`:** The Python package installer. [uv installation guide](https://astral.sh/uv/install).
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 1. First-Time Setup
 
-## Add new projects
+1.  **Clone the repository:**
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+    ```sh
+    git clone <repository_url>
+    cd data-domain-portal
+    ```
 
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
+2.  **Install JavaScript dependencies:**
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+    ```sh
+    pnpm install
+    ```
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
+3.  **Set up Backend Environment:**
+    The Python backend requires credentials for external services.
 
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
+    - First, create your local environment file by copying the template:
+      ```sh
+      cp apps/server/.env.example apps/server/.env
+      ```
+    - Fill in the required credentials in `apps/server/.env`.
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+4.  **Set up the Database Schema:**
+    This project uses Snowflake as its data warehouse. The following command will connect to your Snowflake instance and create the necessary tables. This command is idempotent and is safe to run multiple times.
+    ```sh
+    pnpm nx run server:setup-db
+    ```
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 2. Running the Application
 
-## Set up CI!
+This monorepo contains multiple applications. You will need to run each in a separate terminal.
 
-### Step 1
+- **Run the Backend API Server:**
 
-To connect to Nx Cloud, run the following command:
+  ```sh
+  pnpm nx serve server
+  ```
 
-```sh
-npx nx connect
-```
+- **Run the Frontend Web Application:**
+  _(Once the `client` app is generated)_
+  ```sh
+  pnpm nx serve client
+  ```
+- **Run a local Redis instance:**
+  ```sh
+  docker run -d --name ddp-redis -p 6379:6379 redis
+  ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+## Development Workflow
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This workspace uses [Nx](https://nx.dev) to manage tasks and automate the development lifecycle.
 
-### Step 2
+- **Run tests for a specific project:**
 
-Use the following command to configure a CI workflow for your workspace:
+  ```sh
+  pnpm nx test server
+  pnpm nx test client
+  ```
 
-```sh
-npx nx g ci-workflow
-```
+- **Run end-to-end tests:**
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+  ```sh
+  pnpm nx e2e client-e2e
+  ```
 
-## Install Nx Console
+- **Visually explore the project graph:**
+  ```sh
+  pnpm nx graph
+  ```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## CI/CD and Automation
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project includes two primary GitHub Actions for automation:
 
-## Useful links
+1.  **Release Please**: Automates the release process by generating release notes and versioning based on commit messages, ensuring that releases are consistent and follow semantic versioning.
 
-Learn more:
+2.  **Continuous Integration (CI)**: This action runs linting and testing on every push to the repository. It helps maintain code quality and ensures that all changes are validated before merging into the main branch.
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Future Work & TODOs
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project is a demonstration and has several areas for future improvement:
+
+- [ ] **Formalize Database Migrations:** The initial schema is created via a script for stability. The next step is to re-integrate a tool like **Alembic** in "manual mode" to provide version-controlled schema migrations, which is a more robust pattern for production environments.
+- [ ] **Containerize All Services:** Create `Dockerfile`s for all applications and a `docker-compose.yml` file to orchestrate the entire stack locally.
+- [ ] **Full Data Orchestration:** Replace the synchronous data upload with an event-driven flow using **Kafka** and an orchestrator like **Dagster**.

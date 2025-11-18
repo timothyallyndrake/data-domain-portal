@@ -5,10 +5,10 @@
   "sourceRoot": "apps/server/src",
   "root": "apps/server",
   "targets": {
-    "serve": {
+    "setup-db": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "uv run python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
+        "command": "uv run python scripts/setup_db.py",
         "cwd": "apps/server"
       }
     },
@@ -37,6 +37,31 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "uv run pytest",
+        "cwd": "apps/server"
+      }
+    },
+    "add": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'INFO: This target is disabled. Please manage dependencies by manually editing pyproject.toml, then run: pnpm nx run server:compile-deps && pnpm nx run server:install'"
+      }
+    },
+    "remove": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'INFO: This target is disabled. Please manage dependencies by manually editing pyproject.toml, then run: pnpm nx run server:compile-deps && pnpm nx run server:install'"
+      }
+    },
+    "update": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'INFO: This target is disabled. Please manage dependencies by manually editing pyproject.toml, then run: pnpm nx run server:compile-deps && pnpm nx run server:install'"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
         "cwd": "apps/server"
       }
     }
